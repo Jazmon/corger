@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-class corger extends Component {
+class Corger extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('corger', () => corger);
+AppRegistry.registerComponent('Corger', () => Corger);
