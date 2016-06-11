@@ -1,12 +1,63 @@
 {
   "name": "corger",
+  "description": "a corgi card flipper",
+  "author": "Atte Huhtakangas <atte.huhtakangas@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jazmon/corger.git"
+  },
+  "keywords": [
+    "react",
+    "corgi",
+    "react native",
+    "redux",
+    "redux saga"
+  ],
   "version": "0.0.1",
+  "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start"
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "mocha src/**/*.spec.js",
+    "test:watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm test'",
+    "coverage": "rimraf coverage && istanbul cover --i=src/**/*.js _mocha -- src/**/*.spec.js",
+    "check-coverage": "istanbul check-coverage"
   },
   "dependencies": {
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.9.1",
+    "babel-eslint": "^6.0.4",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-react-native": "^1.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "eslint": "^2.12.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-babel": "^3.2.0",
+    "eslint-plugin-import": "^1.8.1",
+    "eslint-plugin-jsx-a11y": "^1.4.2",
+    "eslint-plugin-react": "^5.1.1",
+    "eslint-plugin-react-native": "^1.1.0-beta",
     "react": "^15.1.0",
-    "react-native": "0.27.2"
+    "react-native": "0.27.2",
+    "react-native-vector-icons": "^2.0.3",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
+    "redux-saga": "^0.10.5",
+    "remote-redux-devtools": "^0.3.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chokidar-cli": "^1.2.0",
+    "enzyme": "^2.3.0",
+    "isparta": "^4.0.0",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.3",
+    "react-addons-test-utils": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-native-mock": "^0.2.3",
+    "rimraf": "^2.5.2",
+    "sinon": "^1.17.4",
+    "spec": "^1.0.1"
   }
 }
