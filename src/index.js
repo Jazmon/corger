@@ -1,23 +1,12 @@
 import React, { PropTypes } from 'react';
-import {
-  View,
-  Text,
-} from 'react-native';
 
-import Card from './components/Card';
-// import styles from './styles';
+import App from './containers/App';
 
-const propTypes = {
-  // text: PropTypes.string.isRequired,
-};
-
+// TODO: connect navigator here when needed
 function Main() {
   return (
-    <View>
-      <Card>Corge</Card>
-    </View>
+    <App />
   );
 }
-Main.propTypes = propTypes;
 
 export default Main;

@@ -12,8 +12,11 @@ const propTypes = {
 
 function Card({ children }) {
   return (
-    <View>
-      <Text>{children}</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>{children}</Text>
+      <View style={styles.imageWrapper}>
+        <Text style={styles.emoji}>🐶</Text>
+      </View>
     </View>
   );
 }

@@ -12,9 +12,7 @@ import Main from './src';
 
 function Corger() {
   return (
-    <View>
-      <Main />
-    </View>
+    <Main />
   );
 }
 
