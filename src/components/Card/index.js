@@ -14,7 +14,9 @@ class Card extends Component {
     children: PropTypes.node.isRequired,
     elevation: PropTypes.number,
     bottom: PropTypes.number,
+    onPress: PropTypes.func,
   }
+
   constructor(props: Object) {
     super(props);
 
@@ -91,6 +93,7 @@ class Card extends Component {
     ).start();
 
     // TODO: transition here to another view
+    this.props.onPress && this.props.onPress();
   }
 
   hover(bool: Boolean) {

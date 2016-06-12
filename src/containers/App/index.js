@@ -15,19 +15,35 @@ for (let i = 0; i < 5; i++) {
 
 // TODO: connect redux here
 class App extends Component {
-  // static propTypes = {
-  //
-  // }
+  static propTypes = {
+    navigator: PropTypes.any.isRequired,
+  }
 
-  // constructor() {
-  //   super();
-  // }
+  constructor(props) {
+    super(props);
+
+    this.changeView = this.changeView.bind(this);
+  }
+  changeView() {
+    this.props.navigator.push({
+      index: 1,
+    });
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.cardContainer}>
-          {cards.map((card, i) => <Card key={card.index} elevation={i} bottom={i * 5}>{card.title}</Card>)}
+          {cards.map((card, i) =>
+            <Card
+              key={card.index}
+              elevation={i}
+              bottom={(i || 1) * 5}
+              onPress={this.changeView}
+            >
+              {card.title}
+            </Card>)
+          }
         </View>
       </View>
     );
