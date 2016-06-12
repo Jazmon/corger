@@ -29,13 +29,7 @@ class Card extends Component {
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
       onPanResponderTerminationRequest: (evt, gestureState) => true,
       onShouldBlockNativeResponder: (evt, gestureState) => true,
-      onPanResponderGrant: (evt, gestureState) => {
-        console.log('onPanResponderGrant');
-        // The guesture has started. Show visual feedback so the user knows
-        // what is happening!
-        // gestureState.{x,y}0 will be set to zero now
-        this.hover(true);
-      },
+      onPanResponderGrant: (evt, gestureState) => this.hover(true),
       onPanResponderMove: Animated.event([null, {
         dx: this.state.pan.x,
         dy: this.state.pan.y,
@@ -43,7 +37,6 @@ class Card extends Component {
       onPanResponderRelease: (evt, gestureState) => {
         this.hover(false);
         this.setState({
-          ...this.state,
           clicked: (Math.abs(gestureState.dx) < 5 && Math.abs(gestureState.dy < 5)),
         });
         Animated.spring(
@@ -107,7 +100,9 @@ class Card extends Component {
       <Animated.View
         style={[styles.container, { elevation: this.state.elevation }, { transform: [
           { scale: this.state.bounce }, { translateX: this.state.pan.x },
-          { translateY: this.state.pan.y }] }]}
+          { translateY: this.state.pan.y },
+          { rotateZ: this.state.pan.x.interpolate({ inputRange: [-100, 100],
+            outputRange: ['-10deg', '10deg'] }) }] }]}
         {...this.panResponder.panHandlers}
       >
         <Text style={styles.text}>{this.props.children}</Text>
