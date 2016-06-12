@@ -94,6 +94,8 @@ class Card extends Component {
 
     // TODO: transition here to another view
     this.props.onPress && this.props.onPress();
+    this.state.bounce.setValue(1);
+    this.state.pan.setValue({ x: 0, y: 0 });
   }
 
   hover(bool: Boolean) {
