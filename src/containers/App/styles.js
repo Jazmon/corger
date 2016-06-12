@@ -9,6 +9,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#9f9f9f',
     alignSelf: 'stretch',
   },
+  cardContainer: {
+    flex: 0,
+    position: 'absolute',
+    left: 50,
+    bottom: 150,
+  },
 });
 
 export default styles;

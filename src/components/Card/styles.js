@@ -3,11 +3,12 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#e0e0e0',
-    height: 260,
-    width: 240,
+    height: 300,
+    width: 270,
     elevation: 1,
     paddingHorizontal: 12,
     paddingVertical: 24,
+    position: 'absolute',
   },
   text: {
     textAlign: 'center',
@@ -19,6 +20,8 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     marginTop: 40,
+  },
+  image: {
   },
 });
 

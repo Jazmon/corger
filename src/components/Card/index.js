@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import {
   View,
   Text,
+  Image,
   Animated,
   PanResponder,
 } from 'react-native';
@@ -11,6 +12,8 @@ import styles from './styles';
 class Card extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
+    elevation: PropTypes.number,
+    bottom: PropTypes.number,
   }
   constructor(props: Object) {
     super(props);
@@ -19,7 +22,8 @@ class Card extends Component {
       bounce: new Animated.Value(),
       pan: new Animated.ValueXY(),
       clicked: false,
-      elevation: 1,
+      elevation: this.props.elevation || 1,
+      url: this.generateUrl(),
     };
 
     this.panResponder = PanResponder.create({
@@ -36,8 +40,6 @@ class Card extends Component {
       }]),
       onPanResponderRelease: (evt, gestureState) => {
         this.hover(false);
-        console.log(`x0: ${gestureState.x0}, y0: ${gestureState.y0}`);
-        console.log(`dx: ${gestureState.dx}, dy: ${gestureState.dy}`);
         this.setState({
           clicked: (Math.abs(gestureState.dx) < 5 && Math.abs(gestureState.dy < 5)),
           panEndX: gestureState.dx,
@@ -49,8 +51,6 @@ class Card extends Component {
         ).start();
       },
       onPanResponderTerminate: (evt, gestureState) => {
-        // Another component has become the responder, so this gesture
-        // should be cancelled
         this.hover(false);
         Animated.spring(
           this.state.pan,
@@ -74,7 +74,6 @@ class Card extends Component {
     }
 
     if (nextState.panEndX && Math.abs(nextState.panEndX) > 100) {
-      console.log(`panEndX: ${nextState.panEndX}`);
       this.floatAway(nextState.panEndX > 0);
     }
   }
@@ -96,7 +95,7 @@ class Card extends Component {
 
   hover(bool: Boolean) {
     this.setState({
-      elevation: bool ? 5 : 1,
+      elevation: bool ? 5 : this.props.elevation || 1,
     });
   }
 
@@ -107,11 +106,15 @@ class Card extends Component {
     ).start();
   }
 
+  generateUrl() {
+    return `http://loremflickr.com/246/185/corgi?random=${Math.random() * 10}`;
+  }
+
   render() {
     return (
       <Animated.View
-        style={[styles.container, { elevation: this.state.elevation }, { transform: [
-          { scale: this.state.bounce }, { translateX: this.state.pan.x },
+        style={[styles.container, { bottom: this.props.bottom, elevation: this.state.elevation },
+          { transform: [{ scale: this.state.bounce }, { translateX: this.state.pan.x },
           { translateY: this.state.pan.y },
           { rotateZ: this.state.pan.x.interpolate({ inputRange: [-100, 100],
             outputRange: ['-10deg', '10deg'] }) }] }]}
@@ -119,7 +122,12 @@ class Card extends Component {
       >
         <Text style={styles.text}>{this.props.children}</Text>
         <View style={styles.imageWrapper}>
-          <Text style={styles.emoji}>🐶</Text>
+          <Image
+            style={styles.image}
+            source={{ uri: this.state.url }}
+            width={246}
+            height={185}
+          />
         </View>
       </Animated.View>
     );
