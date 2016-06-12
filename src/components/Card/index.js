@@ -36,8 +36,12 @@ class Card extends Component {
       }]),
       onPanResponderRelease: (evt, gestureState) => {
         this.hover(false);
+        console.log(`x0: ${gestureState.x0}, y0: ${gestureState.y0}`);
+        console.log(`dx: ${gestureState.dx}, dy: ${gestureState.dy}`);
         this.setState({
           clicked: (Math.abs(gestureState.dx) < 5 && Math.abs(gestureState.dy < 5)),
+          panEndX: gestureState.dx,
+          panEndY: gestureState.dy,
         });
         Animated.spring(
           this.state.pan,
@@ -54,8 +58,6 @@ class Card extends Component {
         ).start();
       },
     });
-
-    this.onPressButton = this.onPressButton.bind(this);
   }
 
   componentWillMount() {
@@ -70,11 +72,15 @@ class Card extends Component {
     if (!this.state.clicked && nextState.clicked) {
       this.onPressButton();
     }
+
+    if (nextState.panEndX && Math.abs(nextState.panEndX) > 100) {
+      console.log(`panEndX: ${nextState.panEndX}`);
+      this.floatAway(nextState.panEndX > 0);
+    }
   }
 
   onPressButton() {
     this.setState({
-      ...this.state,
       clicked: false,
     });
     // eslint-disable-next-line no-underscore-dangle
@@ -90,9 +96,15 @@ class Card extends Component {
 
   hover(bool: Boolean) {
     this.setState({
-      ...this.state,
       elevation: bool ? 5 : 1,
     });
+  }
+
+  floatAway(right: Boolean) {
+    Animated.timing(
+      this.state.pan.x,
+      { toValue: right ? 350 : -350 }
+    ).start();
   }
 
   render() {
