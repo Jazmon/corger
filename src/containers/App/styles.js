@@ -4,16 +4,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#9f9f9f',
-    alignSelf: 'stretch',
+    alignItems: 'stretch',
+    backgroundColor: '#EEEEEE',
   },
   cardContainer: {
-    flex: 0,
     position: 'absolute',
     left: 50,
     bottom: 150,
+  },
+  toolbar: {
+    backgroundColor: '#FF5722',
+    height: 56,
+    elevation: 6,
   },
 });
 
