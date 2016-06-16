@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import styles from './styles';
+import { createPanresponder } from './panresponder';
 
 class Card extends Component {
   static propTypes = {
@@ -17,6 +18,11 @@ class Card extends Component {
     onPress: PropTypes.func,
   }
 
+  static DefaultProps = {
+    elevation: 1,
+    bottom: 0,
+  }
+
   constructor(props: Object) {
     super(props);
 
@@ -24,46 +30,16 @@ class Card extends Component {
       bounce: new Animated.Value(),
       pan: new Animated.ValueXY(),
       clicked: false,
-      elevation: this.props.elevation || 1,
+      elevation: this.props.elevation,
       url: this.generateUrl(),
     };
 
-    this.panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderTerminationRequest: (evt, gestureState) => true,
-      onShouldBlockNativeResponder: (evt, gestureState) => true,
-      onPanResponderGrant: (evt, gestureState) => this.hover(true),
-      onPanResponderMove: Animated.event([null, {
-        dx: this.state.pan.x,
-        dy: this.state.pan.y,
-      }]),
-      onPanResponderRelease: (evt, gestureState) => {
-        this.hover(false);
-        this.setState({
-          clicked: (Math.abs(gestureState.dx) < 5 && Math.abs(gestureState.dy < 5)),
-          panEndX: gestureState.dx,
-          panEndY: gestureState.dy,
-        });
-        Animated.spring(
-          this.state.pan,
-          { toValue: { x: 0, y: 0 } }
-        ).start();
-      },
-      onPanResponderTerminate: (evt, gestureState) => {
-        this.hover(false);
-        Animated.spring(
-          this.state.pan,
-          { toValue: { x: 0, y: 0 } }
-        ).start();
-      },
-    });
+    this.panResponder = createPanresponder.call(this);
   }
 
   componentWillMount() {
     this.state.bounce.setValue(2);
+
     Animated.spring(
       this.state.bounce,
       { toValue: 1, friction: 3 }
@@ -92,16 +68,34 @@ class Card extends Component {
       { toValue: value, friction: 5 }
     ).start();
 
-    // TODO: transition here to another view
-    this.props.onPress && this.props.onPress();
+    if (this.props.onPress) this.props.onPress();
     this.state.bounce.setValue(1);
     this.state.pan.setValue({ x: 0, y: 0 });
   }
 
-  hover(bool: Boolean) {
-    this.setState({
-      elevation: bool ? 5 : this.props.elevation || 1,
-    });
+  getCardStyle() {
+    const transform = [{
+      scale: this.state.bounce,
+    }, {
+      translateX: this.state.pan.x,
+    }, {
+      translateY: this.state.pan.y,
+    }, {
+      rotateZ: this.state.pan.x.interpolate({
+        inputRange: [-100, 100],
+        outputRange: ['-10deg', '10deg'],
+      }),
+    }];
+
+    return {
+      bottom: this.props.bottom,
+      elevation: this.state.elevation,
+      transform,
+    };
+  }
+
+  generateUrl() {
+    return `http://loremflickr.com/246/185/corgi?random=${Math.random() * 10}`;
   }
 
   floatAway(right: Boolean) {
@@ -111,18 +105,17 @@ class Card extends Component {
     ).start();
   }
 
-  generateUrl() {
-    return `http://loremflickr.com/246/185/corgi?random=${Math.random() * 10}`;
+  hover(bool: Boolean) {
+    const elev = this.props.elevation + 5;
+    this.setState({
+      elevation: bool ? elev : this.props.elevation,
+    });
   }
 
   render() {
     return (
       <Animated.View
-        style={[styles.container, { bottom: this.props.bottom, elevation: this.state.elevation },
-          { transform: [{ scale: this.state.bounce }, { translateX: this.state.pan.x },
-          { translateY: this.state.pan.y },
-          { rotateZ: this.state.pan.x.interpolate({ inputRange: [-100, 100],
-            outputRange: ['-10deg', '10deg'] }) }] }]}
+        style={[styles.container, this.getCardStyle()]}
         {...this.panResponder.panHandlers}
       >
         <Text style={styles.text}>{this.props.children}</Text>
