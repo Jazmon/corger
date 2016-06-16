@@ -68,7 +68,7 @@ class Card extends Component {
       { toValue: value, friction: 5 }
     ).start();
 
-    if (this.props.onPress) this.props.onPress();
+    if (this.props.onPress) this.props.onPress(this.state.url);
     this.state.bounce.setValue(1);
     this.state.pan.setValue({ x: 0, y: 0 });
   }

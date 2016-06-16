@@ -36,7 +36,7 @@ class Main extends Component {
     case 0:
       return (<App navigator={navigator} onBack={this.onBack} />);
     case 1:
-      return (<CardView navigator={navigator} onBack={this.onBack} />);
+      return (<CardView url={route.url} navigator={navigator} onBack={this.onBack} />);
     default:
       throw Error('unknown scene');
     }

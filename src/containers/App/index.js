@@ -50,9 +50,10 @@ class App extends Component {
     this.renderNavigationView = this.renderNavigationView.bind(this);
   }
 
-  changeView() {
+  changeView(url) {
     this.props.navigator.push({
       index: 1,
+      url,
     });
   }
 

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import {
   View,
   Text,
+  Image,
 } from 'react-native';
 import { ToolbarAndroid } from 'react-native-vector-icons/Ionicons';
 
@@ -11,6 +12,7 @@ class CardView extends Component {
   static propTypes = {
     navigator: PropTypes.any,
     onBack: PropTypes.func.isRequired,
+    url: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -40,6 +42,12 @@ class CardView extends Component {
         />
         <View style={styles.textContainer}>
           <Text style={styles.text}>Hello from CardView</Text>
+          <Image
+            style={styles.image}
+            source={{ uri: this.props.url }}
+            width={246}
+            height={185}
+          />
         </View>
       </View>
     );
